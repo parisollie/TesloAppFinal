@@ -46,6 +46,7 @@ export const ProductsApp = () => {
               notification: theme['color-primary-500'],
             },
           }}>
+          {/*V-303,Paso 2.42 */}
           <AuthProvider>
             {/*V-291,paso 1.11,ponemos el stack navigator */}
             <StackNavigator />

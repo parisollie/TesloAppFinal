@@ -16,8 +16,12 @@ interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> { }
 //Paso 1.34,tomamos el({ navigation }: Props)y ya podemos navegar
 export const LoginScreen = ({ navigation }: Props) => {
 
+  //Paso 2.23,tomamos el login del store
   const { login } = useAuthStore();
+  //Paso 2.27,para saber cuando hago un posteo
   const [isPosting, setIsPosting] = useState(false)
+
+  //V-300,paso 2.18
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -26,19 +30,25 @@ export const LoginScreen = ({ navigation }: Props) => {
   //Paso 1.17, para las dimensiones del telefono de toda la pantalla
   const { height } = useWindowDimensions();
 
-  //V-296,paso 1.46,para saber que funciona
-  // console.log({API_URL,stage:STAGE});
+  /*V-296,paso 1.46,para saber que funciona
+   console.log({API_URL,stage:STAGE});*/
 
+  //Paso 2.19
   const onLogin = async () => {
+    //Paso 2.24
     if (form.email.length === 0 || form.password.length === 0) {
       return;
     }
+    //paso 2.28
     setIsPosting(true);
+    //Paso 2.25
     const wasSuccessful = await login(form.email, form.password);
+    //Paso 2.29
     setIsPosting(false);
 
     if (wasSuccessful) return;
 
+    //Paso 2.26
     Alert.alert('Error', 'Usuario o contraseña incorrectos');
 
   }
@@ -61,6 +71,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             placeholder="Correo electrónico"
             keyboardType="email-address"
             autoCapitalize="none"
+            //Paso 2.21,ponemos el value
             value={form.email}
             onChangeText={(email) => setForm({ ...form, email })}
             //Paso 1.31, ponemos el ícono del emai.
@@ -73,6 +84,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             placeholder="Contraseña"
             autoCapitalize="none"
             secureTextEntry
+            //Paso 2.22,ponemos el password
             value={form.password}
             onChangeText={(password) => setForm({ ...form, password })}
             //Paso 1.32, ponemos el ícono
@@ -88,10 +100,12 @@ export const LoginScreen = ({ navigation }: Props) => {
         {/*Paso 1.22 Button */}
         <Layout>
           <Button
+            //Paso 2.30,
             disabled={isPosting}
             //V-294,Paso 1.30,ponemos el ícono
             accessoryRight={<MyIcon name="arrow-forward-outline" white />}
             //appearance="ghost",desaparece el botón y sólo quedan las letras.
+            //paso 2.20,ponemos el la función onLogin
             onPress={onLogin}>Ingresar</Button>
 
         </Layout>

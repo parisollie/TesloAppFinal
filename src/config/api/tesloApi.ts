@@ -14,7 +14,7 @@ export const API_URL =
 
 //V-297,paso 1.47, ponemos el axios
 const tesloApi = axios.create({
-  //Aqui podemos poner toda la url ,por si no funciona
+  //Paso 1.48,Aqui podemos poner toda la url ,por si no funciona
   baseURL: API_URL,
   //Paso 1.49
   headers: {
@@ -23,10 +23,11 @@ const tesloApi = axios.create({
 })
 
 // TODO: Interceptors
-//paso 1.48
+//Paso 2.36
 tesloApi.interceptors.request.use(
   async (config) => {
 
+    //Checamos si en el storaje tenemos un token
     const token = await StorageAdapter.getItem('token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

@@ -6,19 +6,23 @@ import { useAuthStore } from '../store/auth/useAuthStore';
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
 
+  //V-303,Paso 2.41
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
   const { checkStatus, status } = useAuthStore();
 
 
   useEffect(() => {
-    checkStatus(); 
+    //Tan pronto el componente se monta checamos
+    checkStatus();
   }, [])
 
+  //Esta pendiente del estaus de la autenticacion
   useEffect(() => {
-    if ( status !== 'checking' ) {
-      if ( status === 'authenticated' ) {
+    if (status !== 'checking') {
+      if (status === 'authenticated') {
         navigation.reset({
           index: 0,
+          //Si esta autenticado vamos a esta pantalla
           routes: [{ name: 'HomeScreen' }],
         })
       } else {
@@ -28,14 +32,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         })
       }
     }
-  
-    
   }, [status])
-  
-  
+
+
 
 
   return (
-    <>{ children }</>
+    <>{children}</>
   )
 }
