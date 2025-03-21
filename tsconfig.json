@@ -1,6 +1,9 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-      "typeRoots": ["./src/types"],
+    //V-296,paso 1.45
+    "typeRoots": [
+      "./src/types"
+    ],
   }
 }

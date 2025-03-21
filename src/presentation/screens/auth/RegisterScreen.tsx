@@ -1,61 +1,63 @@
-import {Button, Input, Layout, Text} from '@ui-kitten/components';
-import {useWindowDimensions} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import { Button, Input, Layout, Text } from '@ui-kitten/components';
+import { useWindowDimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { MyIcon } from '../../components/ui/MyIcon';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../../navigation/StackNavigator';
 
+//V-290,paso 1.3,creamos el archivo
+//Paso 1.40, le ponemos el 'RegisterScreen' que es la pantalla en la que nos encontramos
+interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> { }
 
-interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
+//V-295,paso 1.36,copiamos el login 
+export const RegisterScreen = ({ navigation }: Props) => {
 
-export const RegisterScreen = ({ navigation }:Props) => {
-
-  const {height} = useWindowDimensions();
+  const { height } = useWindowDimensions();
 
   return (
-    <Layout style={{flex: 1}}>
-      <ScrollView style={{marginHorizontal: 40}}>
-        <Layout style={{paddingTop: height * 0.30}}>
+    <Layout style={{ flex: 1 }}>
+      <ScrollView style={{ marginHorizontal: 40 }}>
+        <Layout style={{ paddingTop: height * 0.30 }}>
           <Text category="h1">Crear cuenta</Text>
           <Text category="p2">Por favor, crea una cuenta para continuar</Text>
         </Layout>
 
-        {/* Inputs */}
-        <Layout style={{marginTop: 20}}>
+        {/*Paso 1.37, agregamos el Nombre de la persona  Inputs */}
+        <Layout style={{ marginTop: 20 }}>
           <Input
             placeholder="Nombre completo"
-            accessoryLeft={ <MyIcon name="person-outline" />}
-            style={{marginBottom: 10}}
+            accessoryLeft={<MyIcon name="person-outline" />}
+            style={{ marginBottom: 10 }}
           />
           <Input
             placeholder="Correo electrónico"
             keyboardType="email-address"
             autoCapitalize="none"
-            accessoryLeft={ <MyIcon name="email-outline" />}
-            style={{marginBottom: 10}}
+            accessoryLeft={<MyIcon name="email-outline" />}
+            style={{ marginBottom: 10 }}
           />
 
           <Input
             placeholder="Contraseña"
             autoCapitalize="none"
             secureTextEntry
-            accessoryLeft={ <MyIcon name="lock-outline" />}
-            style={{marginBottom: 10}}
+            accessoryLeft={<MyIcon name="lock-outline" />}
+            style={{ marginBottom: 10 }}
           />
         </Layout>
 
         {/* Space */}
-        <Layout style={{height: 10}} />
+        <Layout style={{ height: 10 }} />
 
         {/* Button */}
         <Layout>
-          <Button 
-            accessoryRight={ <MyIcon name="arrow-forward-outline" white /> }
-            onPress={() => {}}>Crear</Button>
+          <Button
+            accessoryRight={<MyIcon name="arrow-forward-outline" white />}
+            onPress={() => { }}>Crear</Button>
         </Layout>
 
         {/* Información para crear cuenta */}
-        <Layout style={{height: 50}} />
+        <Layout style={{ height: 50 }} />
 
         <Layout
           style={{
@@ -64,9 +66,10 @@ export const RegisterScreen = ({ navigation }:Props) => {
             justifyContent: 'center',
           }}>
           <Text>¿Ya tienes cuenta?</Text>
-          <Text 
-            status="primary" 
+          <Text
+            status="primary"
             category="s1"
+            //Paso 1.38, nageamos a la cuenta anterior con el goBack
             onPress={() => navigation.goBack()}
           >
             {' '}

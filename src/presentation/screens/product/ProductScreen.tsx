@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import { useRef } from 'react';
 import {
   ButtonGroup,
   Input,
@@ -6,43 +6,44 @@ import {
   Button,
   useTheme,
 } from '@ui-kitten/components';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 
-import {MainLayout} from '../../layouts/MainLayout';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../navigation/StackNavigator';
+import { MainLayout } from '../../layouts/MainLayout';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParams } from '../../navigation/StackNavigator';
 
-import {getProductById, updateCreateProduct} from '../../../actions/products';
+import { getProductById, updateCreateProduct } from '../../../actions/products';
 
-import {ScrollView} from 'react-native-gesture-handler';
-import {Product} from '../../../domain/entities/product';
-import {MyIcon} from '../../components/ui/MyIcon';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Product } from '../../../domain/entities/product';
+import { MyIcon } from '../../components/ui/MyIcon';
 
-import {ProductImages} from '../../components/products/ProductImages';
-import {genders, sizes} from '../../../config/constants/constants';
+import { ProductImages } from '../../components/products/ProductImages';
+import { genders, sizes } from '../../../config/constants/constants';
 import { CameraAdapter } from '../../../config/adapters/camera-adapter';
 
-interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> {}
+interface Props extends StackScreenProps<RootStackParams, 'ProductScreen'> { }
 
-export const ProductScreen = ({route}: Props) => {
+//V-290,paso 1.6,creamos el archivo
+export const ProductScreen = ({ route }: Props) => {
   const productIdRef = useRef(route.params.productId);
   const theme = useTheme();
   const queryClient = useQueryClient();
 
-  const {data: product} = useQuery({
+  const { data: product } = useQuery({
     queryKey: ['product', productIdRef.current],
     queryFn: () => getProductById(productIdRef.current),
   });
 
   const mutation = useMutation({
     mutationFn: (data: Product) =>
-      updateCreateProduct({...data, id: productIdRef.current}),
+      updateCreateProduct({ ...data, id: productIdRef.current }),
     onSuccess(data: Product) {
       productIdRef.current = data.id; // creación
 
-      queryClient.invalidateQueries({queryKey: ['products', 'infinite']});
-      queryClient.invalidateQueries({queryKey: ['product', data.id]});
+      queryClient.invalidateQueries({ queryKey: ['products', 'infinite'] });
+      queryClient.invalidateQueries({ queryKey: ['product', data.id] });
       // queryClient.setQueryData(['product',  data.id ], data);
     },
   });
@@ -53,11 +54,11 @@ export const ProductScreen = ({route}: Props) => {
 
   return (
     <Formik initialValues={product} onSubmit={mutation.mutate}>
-      {({handleChange, handleSubmit, values, errors, setFieldValue}) => (
-        <MainLayout 
-          title={values.title} 
+      {({ handleChange, handleSubmit, values, errors, setFieldValue }) => (
+        <MainLayout
+          title={values.title}
           subTitle={`Precio: ${values.price}`}
-          rightAction={ async() => {
+          rightAction={async () => {
 
             const photos = await CameraAdapter.getPicturesFromLibrary();
             setFieldValue('images', [...values.images, ...photos])
@@ -67,7 +68,7 @@ export const ProductScreen = ({route}: Props) => {
           }}
           rightActionIcon="image-outline"
         >
-          <ScrollView style={{flex: 1}}>
+          <ScrollView style={{ flex: 1 }}>
             {/* Imágenes de el producto */}
             <Layout
               style={{
@@ -79,10 +80,10 @@ export const ProductScreen = ({route}: Props) => {
             </Layout>
 
             {/* Formulario */}
-            <Layout style={{marginHorizontal: 10}}>
+            <Layout style={{ marginHorizontal: 10 }}>
               <Input
                 label="Título"
-                style={{marginVertical: 5}}
+                style={{ marginVertical: 5 }}
                 value={values.title}
                 onChangeText={handleChange('title')}
               />
@@ -90,7 +91,7 @@ export const ProductScreen = ({route}: Props) => {
                 label="Slug"
                 value={values.slug}
                 onChangeText={handleChange('slug')}
-                style={{marginVertical: 5}}
+                style={{ marginVertical: 5 }}
               />
               <Input
                 label="Descripción"
@@ -98,7 +99,7 @@ export const ProductScreen = ({route}: Props) => {
                 onChangeText={handleChange('description')}
                 multiline
                 numberOfLines={5}
-                style={{marginVertical: 5}}
+                style={{ marginVertical: 5 }}
               />
             </Layout>
 
@@ -114,7 +115,7 @@ export const ProductScreen = ({route}: Props) => {
                 label="Precio"
                 value={values.price.toString()}
                 onChangeText={handleChange('price')}
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 keyboardType="numeric"
               />
 
@@ -122,14 +123,14 @@ export const ProductScreen = ({route}: Props) => {
                 label="Inventario"
                 value={values.stock.toString()}
                 onChangeText={handleChange('stock')}
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 keyboardType="numeric"
               />
             </Layout>
 
             {/* Selectores */}
             <ButtonGroup
-              style={{margin: 2, marginTop: 20, marginHorizontal: 15}}
+              style={{ margin: 2, marginTop: 20, marginHorizontal: 15 }}
               size="small"
               appearance="outline">
               {sizes.map(size => (
@@ -155,7 +156,7 @@ export const ProductScreen = ({route}: Props) => {
             </ButtonGroup>
 
             <ButtonGroup
-              style={{margin: 2, marginTop: 20, marginHorizontal: 15}}
+              style={{ margin: 2, marginTop: 20, marginHorizontal: 15 }}
               size="small"
               appearance="outline">
               {genders.map(gender => (
@@ -178,12 +179,12 @@ export const ProductScreen = ({route}: Props) => {
               accessoryLeft={<MyIcon name="save-outline" white />}
               onPress={() => handleSubmit()}
               disabled={mutation.isPending}
-              style={{margin: 15}}>
+              style={{ margin: 15 }}>
               Guardar
             </Button>
 
 
-            <Layout style={{height: 200}} />
+            <Layout style={{ height: 200 }} />
           </ScrollView>
         </MainLayout>
       )}
